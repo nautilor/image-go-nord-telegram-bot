@@ -1,0 +1,6 @@
+.env.json
+*.pyc
+output
+*.log
+.deploy.json
+__pycache__
