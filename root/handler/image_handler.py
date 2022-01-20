@@ -47,7 +47,7 @@ def handle_image(update: Update, context: CallbackContext):
         update.effective_message.chat.send_action(action=ChatAction.UPLOAD_PHOTO)
         # * Convert the picture to a nord colorscheme and send it back to the user
         output_file: str = image_go_nord(image, update.effective_user.id)
-        logger.info("* Sending photo: {output_file}")
+        logger.info(f"* Sending photo: {output_file}")
         update.effective_message.reply_document(document=open(output_file, "rb"))
         logger.info(f"* Removing file: {output_file}")
         remove(output_file)
