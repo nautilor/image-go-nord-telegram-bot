@@ -4,3 +4,4 @@ output
 *.log
 .deploy.json
 __pycache__
+*.zip
