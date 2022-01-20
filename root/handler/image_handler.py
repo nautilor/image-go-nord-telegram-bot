@@ -8,7 +8,12 @@ from pathlib import Path
 from os.path import join
 from os import remove
 from telegram import ChatAction
-from root.constant.constant import NOT_A_PHOTO_MESSAGE, OUTPUT_DIR, OUTPUT_FILE_NAME
+from root.constant.constant import (
+    CONVERTING_PHOTO_MESSAGE,
+    NOT_A_PHOTO_MESSAGE,
+    OUTPUT_DIR,
+    OUTPUT_FILE_NAME,
+)
 import root.util.logger as logger
 
 
@@ -35,11 +40,11 @@ def image_go_nord(image: Document, user_id: int):
 
 def handle_image(update: Update, context: CallbackContext):
     """Handle a new update containing the picture to convert"""
-    update.effective_message.reply_text("🔄 Converting the picture")
-    logger.info("* Sending chat action: upload_photo")
-    update.effective_message.chat.send_action(action=ChatAction.UPLOAD_PHOTO)
     image: Document = update.effective_message.document
     if "image" in image.mime_type:
+        update.effective_message.reply_text(CONVERTING_PHOTO_MESSAGE)
+        logger.info("* Sending chat action: upload_photo")
+        update.effective_message.chat.send_action(action=ChatAction.UPLOAD_PHOTO)
         # * Convert the picture to a nord colorscheme and send it back to the user
         output_file: str = image_go_nord(image, update.effective_user.id)
         logger.info("* Sending photo: {output_file}")
@@ -48,5 +53,5 @@ def handle_image(update: Update, context: CallbackContext):
         remove(output_file)
     else:
         # * Send a message telling the user that document is not an image
-        logger.info("* Sending message: %s", NOT_A_PHOTO_MESSAGE)
+        logger.info("* Sending message: %s" % NOT_A_PHOTO_MESSAGE)
         update.effective_message.reply_text(NOT_A_PHOTO_MESSAGE)

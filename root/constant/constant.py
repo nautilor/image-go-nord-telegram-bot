@@ -32,6 +32,7 @@ WELCOME_MESSAGE = (
 )
 ERROR_MESSAGE = "😔  Sorry, something went wrong. Please try again later."
 NOT_A_PHOTO_MESSAGE = "❌  I can only convert images."
+CONVERTING_PHOTO_MESSAGE = "🔄 Converting the picture..."
 
 # * File conversion parameters
 OUTPUT_DIR = "output"
