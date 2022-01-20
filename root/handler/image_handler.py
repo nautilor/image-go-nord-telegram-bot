@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from telegram import Update, Document
+from telegram.message import Message
 from telegram.ext import CallbackContext
 from ImageGoNord import GoNord
 from PIL import Image
@@ -42,13 +43,15 @@ def handle_image(update: Update, context: CallbackContext):
     """Handle a new update containing the picture to convert"""
     image: Document = update.effective_message.document
     if "image" in image.mime_type:
-        update.effective_message.reply_text(CONVERTING_PHOTO_MESSAGE)
+        message: Message = update.effective_message.reply_text(CONVERTING_PHOTO_MESSAGE)
         logger.info("* Sending chat action: upload_photo")
         update.effective_message.chat.send_action(action=ChatAction.UPLOAD_PHOTO)
         # * Convert the picture to a nord colorscheme and send it back to the user
         output_file: str = image_go_nord(image, update.effective_user.id)
         logger.info(f"* Sending photo: {output_file}")
+        # TODO: Edit the Convert photo message into a Send photo message
         update.effective_message.reply_document(document=open(output_file, "rb"))
+        message.delete()
         logger.info(f"* Removing file: {output_file}")
         remove(output_file)
     else:
