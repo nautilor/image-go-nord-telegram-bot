@@ -14,6 +14,7 @@ from root.constant.constant import (
     NOT_A_PHOTO_MESSAGE,
     OUTPUT_DIR,
     OUTPUT_FILE_NAME,
+    SENDING_PHOTO_MESSAGE,
 )
 import root.util.logger as logger
 
@@ -49,7 +50,7 @@ def handle_image(update: Update, context: CallbackContext):
         # * Convert the picture to a nord colorscheme and send it back to the user
         output_file: str = image_go_nord(image, update.effective_user.id)
         logger.info(f"* Sending photo: {output_file}")
-        # TODO: Edit the Convert photo message into a Send photo message
+        message.edit_text(text=SENDING_PHOTO_MESSAGE)
         update.effective_message.reply_document(document=open(output_file, "rb"))
         message.delete()
         logger.info(f"* Removing file: {output_file}")
