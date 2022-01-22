@@ -16,6 +16,7 @@ from root.constant.constant import (
     OUTPUT_FILE_NAME,
     SENDING_PHOTO_MESSAGE,
 )
+from root.constant.palette import DEFAULT_PALETTES_FOLDER, PALETTE_FILE_NAME
 import root.util.logger as logger
 
 
@@ -32,8 +33,10 @@ def image_go_nord(image: Document, user_id: int):
     logger.info("* Checking if the output directory exists and create it if not")
     Path(path).mkdir(parents=True, exist_ok=True)
     # * Loading the default Nord Palette
-    nord.set_default_nord_palette()
-    logger.info(f"* Converting image to nord colorscheme")
+    nord.reset_palette()
+    nord.set_palette_lookup_path(DEFAULT_PALETTES_FOLDER)
+    nord.add_file_to_palette(PALETTE_FILE_NAME)
+    logger.info(f"* Converting image to palette colorscheme")
     nord.convert_image(image, output_file)
     # * Removing the original file
     remove(filename)
